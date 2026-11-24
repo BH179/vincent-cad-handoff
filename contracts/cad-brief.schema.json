@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bhsstudio.id/schemas/vincent-cad-brief-v1.json",
+  "title": "Vincent CAD Brief",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "job_id",
+    "requested_at",
+    "units",
+    "model",
+    "parameters",
+    "tolerances",
+    "material",
+    "coordinate_system",
+    "required_outputs",
+    "constraints"
+  ],
+  "properties": {
+    "schema": { "const": "vincent-cad-brief/v1" },
+    "job_id": {
+      "type": "string",
+      "pattern": "^m41-[0-9]{8}T[0-9]{6}Z-[a-f0-9]{8}$"
+    },
+    "requested_at": { "type": "string", "format": "date-time" },
+    "units": { "const": "mm" },
+    "model": { "type": "string", "minLength": 1 },
+    "parameters": { "type": "object", "additionalProperties": true },
+    "tolerances": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dimensions_mm", "hole_diameter_mm", "hole_centers_mm", "volume_mm3"],
+      "properties": {
+        "dimensions_mm": { "type": "number", "exclusiveMinimum": 0 },
+        "hole_diameter_mm": { "type": "number", "exclusiveMinimum": 0 },
+        "hole_centers_mm": { "type": "number", "exclusiveMinimum": 0 },
+        "volume_mm3": { "type": "number", "exclusiveMinimum": 0 }
+      }
+    },
+    "material": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "source"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "source": { "type": "string", "minLength": 1 }
+      }
+    },
+    "coordinate_system": { "type": "string", "minLength": 1 },
+    "required_outputs": {
+      "type": "array",
+      "items": {
+        "enum": ["model.py", "model.step", "model.stl", "validation.json", "preview.png"]
+      },
+      "contains": { "const": "model.py" },
+      "uniqueItems": true
+    },
+    "constraints": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "notes": { "type": "string" }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bhsstudio.id/schemas/vincent-cad-status-v1.json",
+  "title": "Vincent CAD Job Status",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "job_id", "status", "completed_at", "notes"],
+  "properties": {
+    "schema": { "const": "vincent-cad-status/v1" },
+    "job_id": {
+      "type": "string",
+      "pattern": "^m41-[0-9]{8}T[0-9]{6}Z-[a-f0-9]{8}$"
+    },
+    "status": { "enum": ["ready", "failed"] },
+    "completed_at": { "type": "string", "format": "date-time" },
+    "notes": {
+      "type": ["string", "null"],
+      "maxLength": 500
+    }
+  }
+}
